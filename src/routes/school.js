@@ -5,6 +5,13 @@ const app = express();
 
 app.use(express.json());
 
+app.get('/health',(req,res)=>{
+  res.status(200).json({
+    success:true,
+    message:`All Services are up!`,
+    timeStamp:new Date().toLocaleString()
+  })
+})
 
 app.post("/addSchool", addSchool);
 
