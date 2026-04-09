@@ -1,0 +1,206 @@
+{
+  "info": {
+    "_postman_id": "7431c3a3-9255-4d66-a90c-36c298fe0fbd",
+    "name": "School Management API",
+    "description": "Users can now add Schools and get the schools nearby based on their location.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add School",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Delhi Public School\",\n  \"address\": \"RK Puram, New Delhi\",\n  \"latitude\": 28.5672,\n  \"longitude\": 77.1833\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://school-assesment.onrender.com/addSchool",
+          "protocol": "https",
+          "host": ["school-assesment", "onrender", "com"],
+          "path": ["addSchool"]
+        },
+        "description": "Adds a new school to the database. Validates all fields before insertion. Returns 409 if school with same name and address already exists."
+      },
+      "response": [
+        {
+          "name": "Success - School Added",
+          "status": "Created",
+          "code": 201,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"School data recorded!\",\n  \"SchoolId\": 1,\n  \"timeStamp\": \"4/9/2026, 3:00:00 PM\"\n}",
+          "originalRequest": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Delhi Public School\",\n  \"address\": \"RK Puram, New Delhi\",\n  \"latitude\": 28.5672,\n  \"longitude\": 77.1833\n}"
+            },
+            "url": {
+              "raw": "https://school-assesment.onrender.com/addSchool",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["addSchool"]
+            }
+          }
+        },
+        {
+          "name": "Error - Missing Field",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid Input Provided\"\n}",
+          "originalRequest": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Delhi Public School\",\n  \"address\": \"RK Puram, New Delhi\",\n  \"latitude\": 28.5672\n}"
+            },
+            "url": {
+              "raw": "https://school-assesment.onrender.com/addSchool",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["addSchool"]
+            }
+          }
+        },
+        {
+          "name": "Error - Duplicate School",
+          "status": "Conflict",
+          "code": 409,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"status\": 409,\n  \"message\": \"School already exists\"\n}",
+          "originalRequest": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Delhi Public School\",\n  \"address\": \"RK Puram, New Delhi\",\n  \"latitude\": 28.5672,\n  \"longitude\": 77.1833\n}"
+            },
+            "url": {
+              "raw": "https://school-assesment.onrender.com/addSchool",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["addSchool"]
+            }
+          }
+        },
+        {
+          "name": "Error - Invalid Latitude",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid Input Provided\"\n}",
+          "originalRequest": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Delhi Public School\",\n  \"address\": \"RK Puram, New Delhi\",\n  \"latitude\": 200,\n  \"longitude\": 77.1833\n}"
+            },
+            "url": {
+              "raw": "https://school-assesment.onrender.com/addSchool",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["addSchool"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "List Schools",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://school-assesment.onrender.com/listSchools?latitude=12.97&longitude=77.59",
+          "protocol": "https",
+          "host": ["school-assesment", "onrender", "com"],
+          "path": ["listSchools"],
+          "query": [
+            { "key": "latitude", "value": "12.97", "description": "User's latitude (-90 to 90)" },
+            { "key": "longitude", "value": "77.59", "description": "User's longitude (-180 to 180)" }
+          ]
+        },
+        "description": "Fetches all schools sorted by proximity to the user's location using the Haversine formula."
+      },
+      "response": [
+        {
+          "name": "Success - Schools Found",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"success\": true,\n  \"message\": \"List of near by schools:\",\n  \"userCo_ordinates\": \"12.97,77.59\",\n  \"schoolsCount\": 3,\n  \"schools\": [\n    {\n      \"id\": 2,\n      \"name\": \"Kendriya Vidyalaya\",\n      \"address\": \"Jayanagar, Bengaluru\",\n      \"latitude\": 12.925,\n      \"longitude\": 77.5938,\n      \"distance\": \"0.54 kms\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Bishop Cotton School\",\n      \"address\": \"Shimla, Himachal Pradesh\",\n      \"latitude\": 31.1048,\n      \"longitude\": 77.1734,\n      \"distance\": \"2013.45 kms\"\n    },\n    {\n      \"id\": 1,\n      \"name\": \"Delhi Public School\",\n      \"address\": \"RK Puram, New Delhi\",\n      \"latitude\": 28.5672,\n      \"longitude\": 77.1833,\n      \"distance\": \"2015.67 kms\"\n    }\n  ],\n  \"timeStamp\": \"4/9/2026, 3:00:00 PM\"\n}",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://school-assesment.onrender.com/listSchools?latitude=12.97&longitude=77.59",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["listSchools"],
+              "query": [
+                { "key": "latitude", "value": "12.97" },
+                { "key": "longitude", "value": "77.59" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Success - No Schools Yet",
+          "status": "OK",
+          "code": 200,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"message\": \"No School Data is present yet!\",\n  \"timeStamp\": \"4/9/2026, 3:00:00 PM\"\n}",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://school-assesment.onrender.com/listSchools?latitude=12.97&longitude=77.59",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["listSchools"],
+              "query": [
+                { "key": "latitude", "value": "12.97" },
+                { "key": "longitude", "value": "77.59" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Error - Missing Coordinates",
+          "status": "Bad Request",
+          "code": 400,
+          "header": [{ "key": "Content-Type", "value": "application/json" }],
+          "body": "{\n  \"status\": 400,\n  \"message\": \"Invalid user co-ordinates provided\"\n}",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://school-assesment.onrender.com/listSchools?latitude=12.97",
+              "protocol": "https",
+              "host": ["school-assesment", "onrender", "com"],
+              "path": ["listSchools"],
+              "query": [
+                { "key": "latitude", "value": "12.97" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
