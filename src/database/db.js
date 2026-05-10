@@ -8,7 +8,6 @@ const __dirname = path.dirname(currentFile);
 
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
-console.log(process.env.DB_HOST)
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
